@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <script src="https://test-gateway.mastercard.com/checkout/version/52/checkout.js"
+                data-error="errorCallback"
+                data-cancel="cancelCallback">
+        </script>
+
+        <script type="text/javascript">
+            function errorCallback(error) {
+                  console.log(JSON.stringify(error));
+            }
+            function cancelCallback() {
+                  console.log('Payment cancelled');
+            }
+
+            Checkout.configure({
+                merchant: 'TESTWILHONCOM201',
+                order: {
+                    amount: function() {
+                        //Dynamic calculation of amount
+                        return 80 + 20;
+                    },
+                    currency: 'AUD',
+                    description: 'Ordered goods',
+                   id: function makeid(){
+    												 //Generate a random order.id
+    												 var text = "";
+    												 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    												 for( var i=0; i < 10; i++ )
+        										 text += possible.charAt(Math.floor(Math.random() * possible.length));
+    												 return text;
+														 },
+                },
+                interaction: {
+                    operation: 'PURCHASE', // set this field to 'PURCHASE' for Hosted Checkout to perform a Pay Operation.
+                    merchant: {
+                        name: 'Your merchant name',
+                        address: {
+                            line1: '200 Sample St',
+                            line2: '1234 Example Town'            
+                        }    
+                    }
+                                                                }
+            });
+        </script>
+    </head>
+    <body>
+        ...
+        <input type="button" value="Pay with Lightbox" onclick="Checkout.showLightbox();" />
+        <input type="button" value="Pay with Payment Page" onclick="Checkout.showPaymentPage();" />
+        ...
+    </body>
+</html>
